@@ -20,7 +20,7 @@
     SUM(customers) as total,
     total_sales/customers AS 'Average'
     FROM sales
-    GROUP BY monthname
+    GROUP BY MONTH(sales_date)
   ");
 
   foreach($result as $data)

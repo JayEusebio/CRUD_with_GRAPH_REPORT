@@ -13,8 +13,10 @@
    if (isset($_POST['submit'])) {
 
       $sales_date = $_POST['sales_date'];
-      $total_sales = $_POST['totalofsales'];
-      $numofcustomer = $_POST['numberofcustomer'];
+      $total_sales = floatval(preg_replace('/[^\d.]/', '', $_POST['totalofsales']));
+      $numofcustomer = floatval(preg_replace('/[^\d.]/', '', $_POST['numberofcustomer']));
+
+      var_dump($total_sales);
 
       $query->query("INSERT INTO sales (sales_date, total_sales, customers) VALUES ('$sales_date', '$total_sales', '$numofcustomer')") or die($query->error());
 

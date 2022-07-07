@@ -31,21 +31,21 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-md">Date</span>
         </div>
-        <input type="date" value="<?=$sales_date ?>" name="sales_date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        <input type="date" value="<?= $sales_date ?>" name="sales_date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
     </div>
 
     <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-md">Total Sales</span>
         </div>
-        <input type="text" value="<?=$total_sales ?>" name="totalofsales" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        <input type="text" value="<?= $total_sales ?>" name="totalofsales" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
     </div>
 
     <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-md">Numbers of Customers</span>
         </div>
-        <input type="text" value="<?=$numofcustomer ?>" name="numberofcustomer" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        <input type="text" value="<?= $numofcustomer ?>" name="numberofcustomer" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
     </div>
     <?php 
         if ($update == true):
@@ -58,25 +58,23 @@
 </div>
 <div class="container">
    <div class="container m-4"> 
-       <!-- Button trigger modal -->
-        <a type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            View Total of Sales
-        </a>
 
-        <a type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-            View Total Number of Customers
+        <a href="pages/monthly_report.php" class="btn btn-outline-secondary btn-sm">
+            Monthly Report!
+        </a>       
+        <a href="pages/daily_sales.php" class="btn btn-outline-secondary btn-sm text-center">
+            Daily Sales Report
         </a>
-
-        <a type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal3">
-            View Average purchase per customer
+        <a href="pages/daily_customers.php" class="btn btn-outline-secondary btn-sm text-center">
+            Daily Customer Report
         </a>
-
-        <!-- <a href="pages/average.php" class="btn btn-outline-secondary btn-sm">View Average purchase per customer</a>   -->
+        <a href="pages/daily_average.php" class="btn btn-outline-secondary btn-sm text-center">
+            Daily Average Report
+        </a>
     </div>
     <table class="table">
-        <thead class="thead-dark">
+        <thead class="table-dark text-center">
             <tr>
-            <th >#</th>
             <th >Date</th>
             <th >Total Sales</th>
             <th >Numbers of Customers</th>
@@ -85,14 +83,16 @@
         </thead>
         <?php  
               
-            $result = $query->query("SELECT * FROM sales") or die (mysqli_error($query));
+            $result = $query->query("SELECT * FROM sales ORDER BY sales_date DESC") or die (mysqli_error($query));
                 
-            foreach($result as $sales) { ?>
-        <tbody>
+            foreach($result as $sales) { 
+               $converted = strtotime($sales['sales_date']);
+               $newconverted = date("M d, Y", $converted);
+                ?>
+        <tbody class="text-center">
             <tr>
-            <th><?= $sales['id'] ?></th>
-            <td><?= $sales['sales_date'] ?></td>
-            <td><?= $sales['total_sales'] ?></td>
+            <td><?=  $newconverted ?></td>
+            <td>PHP <?= number_format($sales['total_sales'],2)  ?></td>
             <td><?= $sales['customers'] ?></td>
             <td><a href="index.php?edit=<?= $sales['id'] ?>" class="btn btn-outline-success">Edit</a> <a href="includes/controller.php?delete=<?= $sales['id'] ?>" class="btn btn-outline-danger">Delete</a></td>
             </tr>
@@ -101,9 +101,9 @@
         </table>
     </tbody>
     </table>
-    <?php require_once 'pages/total_of_sales.php' ?>
-    <?php require_once 'pages/customer.php' ?>
-    <?php require_once 'pages/average.php' ?>
+    <?php require_once 'pages/daily_sales.php' ?>
+
+
 </div>
 </body>
 </html>

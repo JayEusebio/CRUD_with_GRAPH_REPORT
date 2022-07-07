@@ -39,7 +39,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div style="w-auto center">
+                    <div class="w-auto center">
                         <canvas id="myChart"></canvas>
                         <?php 
                             $total = 0;
